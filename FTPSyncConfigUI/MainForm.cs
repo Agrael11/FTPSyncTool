@@ -217,9 +217,9 @@ namespace FTPSyncConfigUI
 
         private static bool TryGetService(out ServiceController? service)
         {
-            var services = ServiceController.GetServices();
+            var services = ServiceController.GetServices().Where(t => t.ServiceName == PathInfo.ServiceName);
             service = services.FirstOrDefault();
-            return services.Any(t => t.ServiceName == PathInfo.ServiceName);
+            return services.Any();
         }
 
         private static bool IsServiceInstalled()
@@ -236,7 +236,15 @@ namespace FTPSyncConfigUI
                 Verb = "runas",
                 UseShellExecute = true
             };
-            Process.Start(info);
+            try
+            {
+                Process.Start(info);
+            }
+            catch
+            {
+
+            }
+            Thread.Sleep(2000);
         }
 
         private static bool InstallService()
@@ -258,14 +266,14 @@ namespace FTPSyncConfigUI
 
         private static void StartService()
         {
-            TryGetService(out var service);
-            service?.Start();
+            var arguments = $"start \"{PathInfo.ServiceName}\"";
+            RunSc(arguments);
         }
 
         private static void StopService()
         {
-            TryGetService(out var service);
-            service?.Stop();
+            var arguments = $"stop \"{PathInfo.ServiceName}\"";
+            RunSc(arguments);
         }
 
         private void Install_Button_Click(object sender, EventArgs e)
