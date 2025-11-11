@@ -99,5 +99,10 @@ namespace FTPSyncLib
         {
             return _profiles.Keys;   
         }
+
+        public static IEnumerable<string> GetDueToSyncProfileNames()
+        {
+            return _profiles.Where(t=>t.Value.DueForSync).Select(t=>t.Key);
+        }
     }
 }

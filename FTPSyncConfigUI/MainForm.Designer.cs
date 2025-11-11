@@ -40,6 +40,8 @@ namespace FTPSyncConfigUI
             RemoveP_Button = new Button();
             AddP_Button = new Button();
             RenameP_Button = new Button();
+            Start_Button = new Button();
+            Install_Button = new Button();
             Settings_Button = new Button();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
@@ -104,7 +106,6 @@ namespace FTPSyncConfigUI
             // 
             splitContainer2.Dock = DockStyle.Fill;
             splitContainer2.FixedPanel = FixedPanel.Panel2;
-            splitContainer2.IsSplitterFixed = true;
             splitContainer2.Location = new Point(0, 0);
             splitContainer2.Name = "splitContainer2";
             splitContainer2.Orientation = Orientation.Horizontal;
@@ -118,9 +119,11 @@ namespace FTPSyncConfigUI
             // 
             // splitContainer2.Panel2
             // 
+            splitContainer2.Panel2.Controls.Add(Start_Button);
+            splitContainer2.Panel2.Controls.Add(Install_Button);
             splitContainer2.Panel2.Controls.Add(Settings_Button);
             splitContainer2.Size = new Size(244, 966);
-            splitContainer2.SplitterDistance = 873;
+            splitContainer2.SplitterDistance = 781;
             splitContainer2.TabIndex = 998;
             splitContainer2.TabStop = false;
             // 
@@ -164,6 +167,26 @@ namespace FTPSyncConfigUI
             RenameP_Button.UseVisualStyleBackColor = true;
             RenameP_Button.Click += RenameP_Button_Click;
             // 
+            // Start_Button
+            // 
+            Start_Button.Location = new Point(18, 119);
+            Start_Button.Name = "Start_Button";
+            Start_Button.Size = new Size(214, 46);
+            Start_Button.TabIndex = 6;
+            Start_Button.Text = "Start Service";
+            Start_Button.UseVisualStyleBackColor = true;
+            Start_Button.Click += Start_Button_Click;
+            // 
+            // Install_Button
+            // 
+            Install_Button.Location = new Point(18, 67);
+            Install_Button.Name = "Install_Button";
+            Install_Button.Size = new Size(214, 46);
+            Install_Button.TabIndex = 5;
+            Install_Button.Text = "Uninstall Service";
+            Install_Button.UseVisualStyleBackColor = true;
+            Install_Button.Click += Install_Button_Click;
+            // 
             // Settings_Button
             // 
             Settings_Button.Enabled = false;
@@ -182,7 +205,7 @@ namespace FTPSyncConfigUI
             ClientSize = new Size(1168, 966);
             Controls.Add(splitContainer1);
             Name = "MainForm";
-            Text = "S";
+            Text = "FTP Sync Tool Configuration";
             Load += MainForm_Load;
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel2.ResumeLayout(false);
@@ -209,5 +232,7 @@ namespace FTPSyncConfigUI
         private ColumnHeader columnHeader3;
         private ColumnHeader columnHeader4;
         private Button Edit_Button;
+        private Button Install_Button;
+        private Button Start_Button;
     }
 }

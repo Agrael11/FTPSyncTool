@@ -1,13 +1,12 @@
 using FTPSyncLib;
+using System.ComponentModel.Design;
+using System.Diagnostics;
+using System.ServiceProcess;
 
 namespace FTPSyncConfigUI
 {
     public partial class MainForm : Form
     {
-        private static readonly string ConfigurationLocation = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Tachi", "FTPSync");
-        private static readonly string ConfigurationFile = Path.Combine(ConfigurationLocation, "cofig.json");
-        private static readonly string ProfilesFile = Path.Combine(ConfigurationLocation, "profiles.json");
-
         public MainForm()
         {
             InitializeComponent();
@@ -16,16 +15,35 @@ namespace FTPSyncConfigUI
 
         public void MainForm_Load(object sender, EventArgs e)
         {
-            Directory.CreateDirectory(ConfigurationLocation);
+            Directory.CreateDirectory(PathInfo.ConfigurationLocation);
             RepopulateListView();
+            UpdateLabel();
+        }
+
+        public void UpdateLabel()
+        {
+            Install_Button.Text = "Install Service";
+            Start_Button.Enabled = false;
+            Start_Button.Text = "Start Service";
+            if (!IsServiceInstalled())
+            {
+                return;
+            }
+            Install_Button.Text = "Uninstall Service";
+            Start_Button.Enabled = true;
+            if (!IsServiceRunning())
+            {
+                return;
+            }
+            Start_Button.Text = "Stop Service";
         }
 
         public void RepopulateListView()
         {
             listView1.Items.Clear();
-            if (File.Exists(ProfilesFile))
+            if (File.Exists(PathInfo.ProfilesFile))
             {
-                ProfileManager.LoadFromFile(ProfilesFile);
+                ProfileManager.LoadFromFile(PathInfo.ProfilesFile);
             }
             foreach (var profileName in ProfileManager.GetAllProfileNames())
             {
@@ -73,7 +91,7 @@ namespace FTPSyncConfigUI
             editDialogue.SetTitle($"Configure New Profile ({newProfileName})");
             if (editDialogue.ShowDialog() == DialogResult.OK)
             {
-                ProfileManager.SaveToFile(ProfilesFile);
+                ProfileManager.SaveToFile(PathInfo.ProfilesFile);
                 RepopulateListView();
             }
             else
@@ -95,7 +113,7 @@ namespace FTPSyncConfigUI
             editDialogue.SetTitle($"Editing Profile {profile}");
             if (editDialogue.ShowDialog() == DialogResult.OK)
             {
-                ProfileManager.SaveToFile(ProfilesFile);
+                ProfileManager.SaveToFile(PathInfo.ProfilesFile);
                 RepopulateListView();
             }
         }
@@ -113,7 +131,7 @@ namespace FTPSyncConfigUI
             dialogue.SetTitle("Rename Profile");
             if (dialogue.ShowDialog() == DialogResult.OK)
             {
-                ProfileManager.SaveToFile(ProfilesFile);
+                ProfileManager.SaveToFile(PathInfo.ProfilesFile);
                 RepopulateListView();
             }
         }
@@ -162,7 +180,7 @@ namespace FTPSyncConfigUI
                     if (safe) DeleteProfile(selected, true);
                 }
             }
-            ProfileManager.SaveToFile(ProfilesFile);
+            ProfileManager.SaveToFile(PathInfo.ProfilesFile);
             RepopulateListView();
         }
 
@@ -188,6 +206,106 @@ namespace FTPSyncConfigUI
                 selectedProfiles[i] = items[i].SubItems[0].Text;
             }
             return selectedProfiles;
+        }
+
+        private static bool IsServiceRunning()
+        {
+            return TryGetService(out var service)
+                && (service is not null)
+                && (service.Status == ServiceControllerStatus.Running);
+        }
+
+        private static bool TryGetService(out ServiceController? service)
+        {
+            var services = ServiceController.GetServices();
+            service = services.FirstOrDefault();
+            return services.Any(t => t.ServiceName == PathInfo.ServiceName);
+        }
+
+        private static bool IsServiceInstalled()
+        {
+            return TryGetService(out _);
+        }
+
+        private static void RunSc(string arguments)
+        {
+            var info = new ProcessStartInfo
+            {
+                FileName = "sc.exe",
+                Arguments = arguments,
+                Verb = "runas",
+                UseShellExecute = true
+            };
+            Process.Start(info);
+        }
+
+        private static bool InstallService()
+        {
+            var thisDirectory = Path.GetDirectoryName(Application.ExecutablePath);
+            if (thisDirectory is null) return false;
+            var serviceFileName = "FTPSyncService.exe";
+            var servicePath = Path.Combine(thisDirectory, serviceFileName);
+            var arguments = $"create \"{PathInfo.ServiceName}\" binPath=\"{servicePath}\" start= auto";
+            RunSc(arguments);
+            return true;
+        }
+
+        private static void UninstallService()
+        {
+            var arguments = $"delete \"{PathInfo.ServiceName}\"";
+            RunSc(arguments);
+        }
+
+        private static void StartService()
+        {
+            TryGetService(out var service);
+            service?.Start();
+        }
+
+        private static void StopService()
+        {
+            TryGetService(out var service);
+            service?.Stop();
+        }
+
+        private void Install_Button_Click(object sender, EventArgs e)
+        {
+            if (!IsServiceInstalled())
+            {
+                InstallService();
+                UpdateLabel();
+                return;
+            }
+
+            if (IsServiceRunning())
+            {
+                StopService();
+            }
+
+            UninstallService();
+            UpdateLabel();
+
+            return;
+        }
+
+        private void Start_Button_Click(object sender, EventArgs e)
+        {
+            if (!IsServiceInstalled())
+            {
+                return;
+            }
+
+            if (IsServiceRunning())
+            {
+                StopService();
+            }
+            else
+            {
+                StartService();
+            }
+
+            UpdateLabel();
+            return;
         }
     }
 }

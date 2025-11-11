@@ -4,7 +4,7 @@ using System.Net;
 
 namespace FTPSyncLib
 {
-    internal class FTPConnection(FTPProfile profile) : IDisposable
+    public class FTPConnection(FTPProfile profile) : IDisposable
     {
         private FtpClient? _client = null;
         private readonly FTPProfile _profile = profile;
