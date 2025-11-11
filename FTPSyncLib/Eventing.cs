@@ -2,7 +2,7 @@
 
 namespace FTPSyncLib
 {
-    internal static class Eventing
+    public static class Eventing
     {
         public enum LogLevel
         {

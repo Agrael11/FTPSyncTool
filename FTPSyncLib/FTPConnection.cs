@@ -1,6 +1,7 @@
 ﻿using FluentFTP;
 using System.IO.Compression;
 using System.Net;
+using System.Security.Cryptography.X509Certificates;
 
 namespace FTPSyncLib
 {
@@ -30,6 +31,8 @@ namespace FTPSyncLib
                 _client = new FtpClient(_profile.Host, credentials, _profile.Port, config);
 #if DEBUG
                 _client.ValidateCertificate += (control, e) => e.Accept = true;
+#else
+                _client.ValidateCertificate += ValidateCertificate;
 #endif
                 _client.Connect();
                 return true;
@@ -42,6 +45,34 @@ namespace FTPSyncLib
                 Eventing.Log(Eventing.LogLevel.Error, "Connection error", ex.Message);
                 return false;
             }
+        }
+
+        private void ValidateCertificate(FluentFTP.Client.BaseClient.BaseFtpClient control, FtpSslValidationEventArgs e)
+        {
+            try
+            {
+                var certPath = GetCertificate();
+                if (certPath is null) return;
+                var trustedCert = X509CertificateLoader.LoadCertificateFromFile(certPath);
+                if (e.Certificate is not null && e.Certificate.Equals(trustedCert))
+                {
+                    e.Accept = true;
+                    return;
+                }
+                e.Accept = false;
+            }
+            catch
+            {
+                e.Accept = false;
+            }
+        }
+
+        private string? GetCertificate()
+        {
+            Directory.CreateDirectory(PathInfo.CertificatesLocation);
+            var certPath = Path.Join(PathInfo.CertificatesLocation, _profile.ProfileName + ".cer");
+            if (File.Exists(certPath)) return certPath;
+            return null;
         }
 
         private void TryDisconnect()

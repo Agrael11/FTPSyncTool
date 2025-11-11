@@ -45,7 +45,7 @@ namespace FTPSyncLib
         public TimeSpan SyncFrequency { get; set; } = TimeSpan.FromHours(24);
         public DateTime? LastSynced { get; set; } = null;
         public BackupMethod DirectoryBackupMethod { get; set; } = BackupMethod.SingleFolder;
-        public string RemoteSubDirectoryNameFormat { get; set; } = "{yyyy-MM-dd_HH-mm-ss}";
+        public string RemoteSubDirectoryNameFormat { get; set; } = "'Backup_'yyyy-MM-dd_HH-mm";
         public bool DueForSync => IsDueForSync();
 
         public FTPProfile()
