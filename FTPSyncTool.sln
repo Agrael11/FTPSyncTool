@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FTPSyncConfigUI", "FTPSyncC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FTPSyncService", "FTPSyncService\FTPSyncService.csproj", "{9D2704A4-87B7-4F81-BEAB-3C25F0220B29}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonConfigFile", "CommonConfigFile\CommonConfigFile.csproj", "{B68FEFD8-65C7-4B29-96D1-C7DDDA559F3A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{9D2704A4-87B7-4F81-BEAB-3C25F0220B29}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9D2704A4-87B7-4F81-BEAB-3C25F0220B29}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9D2704A4-87B7-4F81-BEAB-3C25F0220B29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B68FEFD8-65C7-4B29-96D1-C7DDDA559F3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B68FEFD8-65C7-4B29-96D1-C7DDDA559F3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B68FEFD8-65C7-4B29-96D1-C7DDDA559F3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B68FEFD8-65C7-4B29-96D1-C7DDDA559F3A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

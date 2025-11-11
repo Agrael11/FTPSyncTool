@@ -29,6 +29,7 @@ namespace FTPSyncConfigUI
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             splitContainer1 = new SplitContainer();
             listView1 = new ListView();
             columnHeader1 = new ColumnHeader();
@@ -43,6 +44,7 @@ namespace FTPSyncConfigUI
             Start_Button = new Button();
             Install_Button = new Button();
             Settings_Button = new Button();
+            timer1 = new System.Windows.Forms.Timer(components);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -122,6 +124,7 @@ namespace FTPSyncConfigUI
             splitContainer2.Panel2.Controls.Add(Start_Button);
             splitContainer2.Panel2.Controls.Add(Install_Button);
             splitContainer2.Panel2.Controls.Add(Settings_Button);
+            splitContainer2.Panel2.Paint += splitContainer2_Panel2_Paint;
             splitContainer2.Size = new Size(244, 966);
             splitContainer2.SplitterDistance = 781;
             splitContainer2.TabIndex = 998;
@@ -189,14 +192,19 @@ namespace FTPSyncConfigUI
             // 
             // Settings_Button
             // 
-            Settings_Button.Enabled = false;
             Settings_Button.Location = new Point(18, 15);
             Settings_Button.Name = "Settings_Button";
             Settings_Button.Size = new Size(214, 46);
             Settings_Button.TabIndex = 4;
             Settings_Button.Text = "Settings";
             Settings_Button.UseVisualStyleBackColor = true;
-            Settings_Button.Visible = false;
+            Settings_Button.Click += Settings_Button_Click;
+            // 
+            // timer1
+            // 
+            timer1.Enabled = true;
+            timer1.Interval = 60000;
+            timer1.Tick += timer1_Tick;
             // 
             // MainForm
             // 
@@ -234,5 +242,6 @@ namespace FTPSyncConfigUI
         private Button Edit_Button;
         private Button Install_Button;
         private Button Start_Button;
+        private System.Windows.Forms.Timer timer1;
     }
 }

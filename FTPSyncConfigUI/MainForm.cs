@@ -2,6 +2,7 @@ using FTPSyncLib;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.ServiceProcess;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace FTPSyncConfigUI
 {
@@ -314,6 +315,23 @@ namespace FTPSyncConfigUI
 
             UpdateLabel();
             return;
+        }
+
+        private void Settings_Button_Click(object sender, EventArgs e)
+        {
+            var configDialogue = new ConfigDialogue();
+            configDialogue.SetTitle($"Settings");
+            configDialogue.ShowDialog();
+        }
+
+        private void splitContainer2_Panel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            RepopulateListView();
         }
     }
 }

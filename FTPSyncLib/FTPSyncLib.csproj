@@ -12,4 +12,8 @@
     <PackageReference Include="System.Diagnostics.EventLog" Version="10.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CommonConfigFile\CommonConfigFile.csproj" />
+  </ItemGroup>
+
 </Project>

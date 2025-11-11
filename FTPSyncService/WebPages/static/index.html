@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FTPSync Control Panel</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <header>
+        <h1>FTPSync Service</h1>
+        <div style="margin-left:auto; display:flex; align-items:center; gap:1rem;">
+            <div id="status">Loading...</div>
+            <button id="logoutBtn">Logout</button>
+        </div>
+    </header>
+
+    <main>
+        <aside id="profiles">
+            <div class="toolbar">
+                <button id="refreshBtn">⟳ Refresh</button>
+                <button id="addBtn">＋ Add</button>
+            </div>
+            <ul id="profileList"></ul>
+        </aside>
+
+        <section id="details">
+            <h2>Profile Details</h2>
+            <div id="profileInfo">Select a profile to view details.</div>
+        </section>
+    </main>
+
+    <footer>
+        <small>FTPSync © 2025 — Local Service Interface</small>
+    </footer>
+    
+    <script src="loginManager.js"></script>
+    <script>
+    loginManager.redirectIfNotAuthenticated();
+    </script>
+
+    <script src="profiles.js"></script>
+    <script src="profilesHelper.js"></script>
+    <script src="main.js"></script>
+
+</body>
+</html>

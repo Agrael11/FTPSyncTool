@@ -1,0 +1,195 @@
+﻿:root {
+  --bg: #111;
+  --fg: #eee;
+  --accent: #6cf;
+  --card: #1a1a1a;
+  --border: #333;
+}
+
+/* === Layout === */
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+header, footer {
+  background: #181818;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+main {
+  flex: 1;
+  display: flex;
+}
+
+aside {
+  width: 280px;
+  background: var(--card);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+}
+
+/* === Toolbar === */
+.toolbar {
+  padding: 10px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 10px;
+}
+
+/* === Buttons === */
+button {
+  background: var(--accent);
+  color: #000;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: opacity 0.2s ease;
+}
+button:hover { opacity: 0.9; }
+
+/* === Profile List === */
+#profileList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg);
+  overflow-y: auto;
+  flex: 1;
+}
+
+.profile-item {
+  padding: 0.6rem 0.8rem;
+  border-bottom: 1px solid #222;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.profile-item:hover { background: #222; }
+.profile-item .name { font-weight: 600; }
+.profile-item .meta {
+  font-size: 0.8rem;
+  color: #aaa;
+  line-height: 1.2;
+}
+.profile-item .sync { color: #666; }
+
+/* === Details Panel === */
+#details {
+  flex: 1;
+  padding: 20px;
+  background: #141414;
+}
+
+/* === Editable Info Blocks === */
+.group {
+  margin-top: 1.5rem;
+}
+.group h3 {
+  margin: 0.2rem 0 0.6rem;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.35rem 0;
+}
+.lab { color: #bbb; }
+.val {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.val.edit span {
+  cursor: pointer;
+  border-bottom: 1px dashed #555;
+}
+
+/* Inputs and Selects */
+.val input, .val select {
+  background-color: #111;
+  border: 1px solid #444;
+  color: #eee;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 0.9rem;
+}
+.val input:focus, .val select:focus {
+  outline: none;
+  border-color: #777;
+}
+
+/* === Pencil / Icons === */
+.val .icon {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  color: #888;
+  cursor: pointer;
+  margin-left: 0.25rem;
+  opacity: 0.3;
+  transition: opacity 0.2s ease, color 0.2s ease, transform 0.1s ease;
+  vertical-align: middle;
+}
+.val .icon:hover {
+  opacity: 1;
+  color: #fff;
+}
+.val .icon:active {
+  transform: scale(0.9);
+}
+
+/* Title pencil styling */
+.title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.title-row .icon {
+  font-size: 1rem;
+  color: #aaa;
+  opacity: 0.4;
+  margin-left: 0.4rem;
+}
+.title-row .icon:hover {
+  color: #fff;
+  opacity: 1;
+}
+
+/* === Read-only Info / Actions === */
+.read div { margin: 0.25rem 0; }
+
+.actions {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+
+header button {
+  background: var(--accent);
+  color: #000;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+header button:hover {
+  opacity: 0.9;
+}

@@ -19,8 +19,8 @@ namespace FTPSyncLib
                 {
 #pragma warning disable CA1416 // Validate platform compatibility
                     if (!EventLog.SourceExists(EventSource))
-                        EventLog.CreateEventSource(EventSource, name);
-                    using var eventLog = new EventLog(name);
+                        EventLog.CreateEventSource(EventSource, "Application");
+                    using var eventLog = new EventLog("Application");
                     eventLog.Source = EventSource;
                     EventLogEntryType entryType = level switch
                     {
@@ -29,7 +29,7 @@ namespace FTPSyncLib
                         LogLevel.Error => EventLogEntryType.Error,
                         _ => EventLogEntryType.Information,
                     };
-                    eventLog.WriteEntry(message, entryType);
+                    eventLog.WriteEntry(name + ":" + message, entryType);
 #pragma warning restore CA1416 // Validate platform compatibility
                 }
             }
