@@ -244,7 +244,7 @@ namespace FTPSyncConfigUI
             var thisDirectory = Path.GetDirectoryName(Application.ExecutablePath);
             if (thisDirectory is null) return false;
             var serviceFileName = "FTPSyncService.exe";
-            var servicePath = Path.Combine(thisDirectory, serviceFileName);
+            var servicePath = Path.Combine(thisDirectory, "Service", serviceFileName);
             var arguments = $"create \"{PathInfo.ServiceName}\" binPath=\"{servicePath}\" start= auto";
             RunSc(arguments);
             return true;
