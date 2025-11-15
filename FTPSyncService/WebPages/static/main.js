@@ -13,24 +13,37 @@ async function applyAndSave(updateFn) {
 }
 
 // helpers for TimeSpan <-> minutes
+// helpers for TimeSpan <-> minutes
 function minsFromTimeSpan(ts) {
-  // ts like "00:01:00" or "24:00:00"
+  // Supports formats like "hh:mm:ss" or "d.hh:mm:ss" (C# TimeSpan compatible)
   if (!ts) return 1440;
-  const parts = String(ts).split(":").map((x) => parseInt(x, 10));
-  if (parts.length !== 3 || parts.some((p) => Number.isNaN(p))) return 1440;
-  // convert full seconds to minutes
-  const hours = parts[0];
-  const minutes = parts[1];
-  const seconds = parts[2];
-  return hours * 60 + minutes + Math.floor(seconds / 60);
+  const s = String(ts).trim();
+  let days = 0;
+  let timePart = s;
+  if (s.includes(".")) {
+    const parts = s.split(".");
+    const d = parseInt(parts[0], 10);
+    if (!Number.isNaN(d)) days = d;
+    timePart = parts.slice(1).join(".");
+  }
+  const tParts = timePart.split(":").map((x) => parseInt(x, 10));
+  if (tParts.length !== 3 || tParts.some((p) => Number.isNaN(p))) return 1440;
+  const hours = tParts[0];
+  const minutes = tParts[1];
+  const seconds = tParts[2];
+  return days * 24 * 60 + hours * 60 + minutes + Math.floor(seconds / 60);
 }
 
 function timeSpanFromMinutes(m) {
-  const total = Number(m) || 0;
-  const h = Math.floor(total / 60);
-  const min = total % 60;
+  const total = Math.max(0, Number(m) || 0);
+  const days = Math.floor(total / (24 * 60));
+  const rem = total - days * 24 * 60;
+  const hours = Math.floor(rem / 60);
+  const minutes = rem % 60;
   const pad = (n) => String(n).padStart(2, "0");
-  return `${pad(h)}:${pad(min)}:00`;
+  // When days > 0 emit "d.hh:mm:ss" which C# TimeSpan.Parse understands.
+  if (days > 0) return `${days}.${pad(hours)}:${pad(minutes)}:00`;
+  return `${pad(hours)}:${pad(minutes)}:00`;
 }
 
 document.getElementById("logoutBtn").addEventListener("click", async () => {
